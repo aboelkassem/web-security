@@ -1,20 +1,38 @@
-# web-security
-This repository aims to cover various topics related to web security, including common vulnerabilities, attack vectors, defensive techniques, and practical methodologies for web application penetration testing.
+# Bug hunting methodology
+## Checklist
+- [ ]  Understand the application, and its business need
+- [ ]  Check how many user roles exist, and create 2 accounts for each role
+- [ ]  Cross-site scripting (XSS) - any user input being reflected in the page (i.e.	firstname, lastname, search text and so on)
+- [ ]  Server-side	request forgery (SSRF) - Any parameter that has a URL or path as a	value (i.e.	https://www.site.com/page.aspx?Origin=google.com&url=https://www.google.com)
+- [ ]  Insecure	Direct Object Reference (IDOR) - Check for any value that have a number or identifier, linked to user data or user activities
+- [ ]  Server-side response manipulation - Check JSON responses, and manipulate any value that is being interpreted by the code (i.e. isadmin=false -- change it to isadmin=true and see if that would make you an admin)
+- [ ]  For a misconfigured CORS to be a vulnerability, 3 things must be there.	**If any of these conditions fails, it is not a vulnerability.**
+    - Following 2 response headers must present:
+        - access-control-allow-origin: attackercontroledsite.com
+        - access-control-allow-credentials: true
+    - Response must be 200 OK, AND must contain sensitive data
+    - There should not be any extra headers (i.e. Authorization)
+- [ ]  Host header injection - in the password reset page, set the hostname to	your controlled hostname, and send a password reset to your account, then check your email if the password reset link includes your hostname.
+- [ ]  XXE - any user input that contains XML data. Or any file upload page	that would accept .xml or .svg
 
-# Reposotiry Content
-- [Portswigger Labs](https://github.com/aboelkassem/portswigger-labs)
-- [Pentesting Tools](tools)
-- [Pentesting Methodology](pentesting-methodology)
-- [Bug hunting methodology](bug-hunting-methodology)
-- [Notes to protect your web app](notes-to-protect-your-web-app)
+## Methodology
 
 
-# Contributing
-I welcome contributions from the community to enhance the repository and make it a more valuable resource for everyone interested in web security. If you have any notes, tools, methodologies, or other relevant resources to share, please feel free to submit a pull request. Please ensure that your contributions align with the repository's purpose and maintain a high standard of quality.
 
-If you have suggestions, feedback, or want to report an issue, please open an issue in the repository's issue tracker.
+### Domain Enumeration
+- subfinder tool
+    - subfinder -d  *.example.com
+- virustotal.com
+- amass tool
+    - amass enum -d example.com
+- Add the wildcards domains into a file called wildcards and use assetfinder and use anew tool to append unique values into a new file
+    - cat wildcards | assetfinder —subs-only | anew domains
+- Take the list of domains and check what is working using httprobe
+    - cat domains | httprobe -c 80 —prefer-https | anew hosts
+- findomain tool reading from txt domains and append new hosts to the file
+    - findomain -f wildcards | tee -a findomain.out
+    - copy the showed domains into new file from-findomain
+- concate all the subdomains
+    - cat from-findomain | anew domains | httprobe -c 50 | anew hosts
 
-# License
-The content of this repository is licensed under the MIT License. You are free to use, modify, and distribute the content as long as you provide attribution and include the original license file.
-
-Please note that while this repository strives to provide accurate and up-to-date information, the field of web security is constantly evolving. Always exercise caution and verify the information with reliable sources before applying any techniques or tools in real-world scenarios.
+## Tools
