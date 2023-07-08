@@ -109,3 +109,7 @@
 - Search for Framework/Technology Name vulnerabilities or exploits
 - Privilege scalation
     - Copy the request of User/Admin (who can change/modify) and change the cookies with another user (who cannot change/modify) ⇒ try **authorize** plugin
+
+
+# Credits
+I would like to acknowledge the above methodology from [Ebrahem Hegazy](https://github.com/zigoo0)
