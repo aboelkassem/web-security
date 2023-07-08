@@ -1,5 +1,5 @@
-# web-security
-This repository aims to cover various topics related to web security, including common vulnerabilities, attack vectors, defensive techniques, and practical methodologies for web application penetration testing.
+# Web security
+This is my space to study and research web application security which includes my notes. This repository aims to cover various topics related to web security, including common vulnerabilities, attack vectors, defensive techniques, and practical methodologies for web application penetration testing.
 
 # Reposotiry Content
 - [Portswigger Labs](https://github.com/aboelkassem/portswigger-labs)
